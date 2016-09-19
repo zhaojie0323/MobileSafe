@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+	<!-- 将对应属性抽取到样式中去 -->
+    <TextView
+        android:id="@+id/tv_version_name"
+        android:text="功能列表"
+        style="@style/TitleStyle"/>
+    <!-- 要实现跑马灯效果，必须要满足以下三个属性 
+        android:ellipsize="marquee"
+        android:focusable="true"  获取焦点
+        android:focusableInTouchMode="true"    在触摸时获取焦点-->
+        <!-- 可以通过自定义控件达到滚动效果（其实就是重写原有的TextView，让其一直能够获取焦点即可） -->
+  <!--   <TextView 
+        android:text="网约车合法了，看新规如何影响你的日常出行，当网约车司机有啥要求，取得相应准驾车型驾驶证具有三年以上驾驶经历。"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:padding="5dp"
+        android:textSize="15sp"
+        android:ellipsize="marquee"
+        android:focusable="true"     
+        android:focusableInTouchMode="true"  
+        android:marqueeRepeatLimit="marquee_forever" 
+        />--> 
+        <!-- 以下是通过自定义了一个能够获取焦点的TextView，再加上其它属性就能够实现和上面一样的效果 -->
+    <com.thunder.MobileSafe.view.FocusTextView
+        android:text="网约车合法了，看新规如何影响你的日常出行，当网约车司机有啥要求，取得相应准驾车型驾驶证具有三年以上驾驶经历。"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:padding="5dp"
+        android:textSize="15sp"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever" >
+    </com.thunder.MobileSafe.view.FocusTextView>
+`	
+
+	<GridView 
+		android:id="@+id/gv_home"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:verticalSpacing="15dp"
+	    android:numColumns="3"
+	    ></GridView>
+
+</LinearLayout>

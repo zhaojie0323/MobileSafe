@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <TextView 
+	    style="@style/TitleStyle"
+	    android:text="2 手机卡绑定"
+	    android:textSize="20dp"
+	    />
+	<TextView 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="通过绑定SIM卡：\n下次重启手机如果发现SIM卡变化就会发送报警短信"
+	    android:textSize="18sp"
+	    android:layout_margin="5dp"
+	    />	           
+	
+	<com.thunder.MobileSafe.view.SettingItemView 
+	    xmlns:mobileSafe="http://schemas.android.com/apk/res/com.thunder.MobileSafe"
+	    android:id="@+id/siv_sim_bound "
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    mobileSafe:destitle="点击绑定SIM卡"
+	    mobileSafe:desoff="SIM卡未绑定"
+	    mobileSafe:deson="SIM卡已绑定">
+	</com.thunder.MobileSafe.view.SettingItemView>
+
+	
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal">
+	  	<ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/presence_invisible"/>
+	    <ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/presence_online"/>
+	  	<ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/presence_invisible"/>
+	  	<ImageView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@android:drawable/presence_invisible"/>
+	</LinearLayout>
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    >
+	    <ImageView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/bind"
+	        android:layout_centerInParent="true"
+	        />
+	     <Button 
+	       style="@style/PrePageBtn"
+	       android:layout_marginLeft="10dp"
+	       android:layout_marginBottom="10dp"/>
+	    <Button 
+	       style="@style/NextPageBtn"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginBottom="10dp"/>
+	</RelativeLayout>   
+
+</LinearLayout>

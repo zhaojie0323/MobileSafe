@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+    
+    <TextView 
+        style="@style/TitleStyle"
+        android:text="设置中心"/>    
+    <!-- 讲一下相对布局，抽取到一个类中去管理，以后只需在布局中添加此类，即可达到以下效果 -->
+    <!--  
+    <RelativeLayout 
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:padding="5dp"
+        >
+        <TextView 
+		    android:id="@+id/tv_title"
+		    android:textSize="18sp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="自动更新设置"/>
+       <TextView 
+		    android:id="@+id/tv_content"
+		    android:layout_below="@id/tv_title"
+		    android:textSize="18sp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="自动更新设置已开启"/>
+       <CheckBox 
+           android:id="@+id/cb_box"
+           android:layout_alignParentRight="true"
+           android:layout_width="wrap_content"
+		   android:layout_height="wrap_content"
+		   android:layout_centerVertical="true"
+           />
+       <View 
+           android:layout_width="match_parent"
+           android:layout_height="1dp"
+           android:background="#000"
+           android:layout_below="@id/tv_content"/>
+    </RelativeLayout>
+-->
+<!-- 使用自定义组合控件代替以上方式 -->
+	<com.thunder.MobileSafe.view.SettingItemView
+	    xmlns:mobileSafe="http://schemas.android.com/apk/res/com.thunder.MobileSafe"
+	    android:id="@+id/siv_update "
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    mobileSafe:destitle="自动更新设置"
+	    mobileSafe:desoff="自动更新以关闭"
+	    mobileSafe:deson="自动更新以开启"
+	    >
+	</com.thunder.MobileSafe.view.SettingItemView>
+	
+	<com.thunder.MobileSafe.view.SettingItemView
+	    xmlns:mobileSafe="http://schemas.android.com/apk/res/com.thunder.MobileSafe"
+	    android:id="@+id/siv_aaa "
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    mobileSafe:destitle="电话归属地显示设置"
+	    mobileSafe:desoff="电话归属地关闭"
+	    mobileSafe:deson="电话归属地开启"
+	    >
+	</com.thunder.MobileSafe.view.SettingItemView>
+
+</LinearLayout>
