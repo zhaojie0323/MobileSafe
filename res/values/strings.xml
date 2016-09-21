@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">安全卫士</string>
+    <string name="sample_device_admin">安全卫士设备管理</string>
+    <string name="sample_device_admin_description">一键锁屏，一键删除</string>
 
 </resources>
