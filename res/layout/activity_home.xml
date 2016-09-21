@@ -27,7 +27,7 @@
         android:marqueeRepeatLimit="marquee_forever" 
         />--> 
         <!-- 以下是通过自定义了一个能够获取焦点的TextView，再加上其它属性就能够实现和上面一样的效果 -->
-    <com.thunder.MobileSafe.view.FocusTextView
+    <com.andy.MobileSafe.view.FocusTextView
         android:text="网约车合法了，看新规如何影响你的日常出行，当网约车司机有啥要求，取得相应准驾车型驾驶证具有三年以上驾驶经历。"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:textSize="15sp"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever" >
-    </com.thunder.MobileSafe.view.FocusTextView>
+    </com.andy.MobileSafe.view.FocusTextView>
 `	
 
 	<GridView 
