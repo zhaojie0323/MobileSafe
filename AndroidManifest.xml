@@ -40,8 +40,9 @@
         <activity android:name="com.andy.MobileSafe.activity.Setup3Activity"/>
         <activity android:name="com.andy.MobileSafe.activity.Setup4Activity"/>
         <activity android:name="com.andy.MobileSafe.activity.ContactListActivity"/>
-        
-        
+        <activity android:name="com.andy.MobileSafe.activity.AToolActivity"/>
+        <activity android:name="com.andy.MobileSafe.activity.QuerryAddressActivity"/>
+
         <receiver android:name="com.andy.MobileSafe.receiver.BootReceiver">
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

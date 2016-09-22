@@ -1,6 +1,7 @@
 package com.andy.MobileSafe.activity;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -106,12 +107,61 @@ public class SplashActivity extends Activity {
         initData();
         //初始化动画
         initAnimation();
+        //初始化数据路
+        initDB();
        
        
         
     }
 
     /**
+     * 初始化数据库
+     */
+    private void initDB() {
+		// 1、归属地数据拷贝过程
+    	initAddressDB("callHomeDB.db");
+		
+	}
+
+	/**
+	 * 拷贝数据库至Files文件夹下
+	 * @param dbName  数据库名称
+	 */
+	private void initAddressDB(String dbName) {
+		//1、在files文件下创建同名dbName数据库过程
+		File files = getFilesDir();
+		File file = new File(files,dbName);
+		if(file.exists()){
+			return;
+		}
+		//2、输入流读取第三方资产目录下的文件
+		InputStream stream=null;
+		FileOutputStream fos=null;
+		try {
+			stream=getAssets().open(dbName);
+			//3、将读取的内容写入到指定文件中去
+			fos=new FileOutputStream(file);
+			//3、每次读取内容的大小
+			byte[] bs=new byte[1024];
+			int temp=-1;
+			while((temp=stream.read(bs))!=-1){
+				fos.write(bs, 0, temp);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally{
+			if(stream != null && fos != null){
+				try {
+					stream.close();
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
      * 淡入淡出动画
      */
     private void initAnimation() {
