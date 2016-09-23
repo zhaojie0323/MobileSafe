@@ -2,15 +2,14 @@ package com.andy.MobileSafe.activity;
 
 import com.andy.MobileSafe.R;
 import com.andy.MobileSafe.engine.AddressDao;
-import com.andy.MobileSafe.utils.ToastUtil;
-
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -55,6 +54,10 @@ public class QuerryAddressActivity extends Activity {
 					//输入为空，抖动动画
 			        Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
 			        et_phone_number.startAnimation(shake);
+			        //手机震动
+			        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			        vibrator.vibrate(1000);
+			        //vibrator.vibrate(new long[]{1000,2000,1000,5000},-1);
 				}
 			}
 		});
