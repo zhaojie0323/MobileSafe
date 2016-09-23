@@ -56,7 +56,7 @@
 	
 	<com.andy.MobileSafe.view.SettingItemView
 	    xmlns:mobileSafe="http://schemas.android.com/apk/res/com.andy.MobileSafe"
-	    android:id="@+id/siv_aaa "
+	    android:id="@+id/siv_address "
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    mobileSafe:destitle="电话归属地显示设置"

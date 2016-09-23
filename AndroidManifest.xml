@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -32,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <activity android:name="com.andy.MobileSafe.activity.HomeActivity"/>
         <activity android:name="com.andy.MobileSafe.activity.SettingActivity"/>
         <activity android:name="com.andy.MobileSafe.activity.SetupOverActivity"/>
@@ -55,7 +56,6 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
             </intent-filter>
         </receiver>
-        <service android:name="com.andy.MobileSafe.service.LocationService"></service>
 
         <receiver
             android:name="com.andy.MobileSafe.receiver.DeviceAdmin"
@@ -69,6 +69,10 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
+        <service android:name="com.andy.MobileSafe.service.LocationService"/>
+        <service android:name="com.andy.MobileSafe.service.AddressService"/>
+
     </application>
 
 

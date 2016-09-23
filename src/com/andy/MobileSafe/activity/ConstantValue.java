@@ -30,5 +30,4 @@ public class ConstantValue {
 	 * 防盗功能是否开启的key
 	 */
 	public static final String OPEN_SECURITY = "open_security";
-
 }
