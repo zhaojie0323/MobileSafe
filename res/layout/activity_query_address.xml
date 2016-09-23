@@ -7,10 +7,10 @@
         style="@style/TitleStyle"
         android:text="归属地查询"/>
     <EditText 
-        android:id="@+id/query_phone_number"
+        android:id="@+id/et_query_phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="请输入查询号码"
+        android:hint="请输入手机号码"
         />
     <Button 
         android:id="@+id/bt_query_phone_address"

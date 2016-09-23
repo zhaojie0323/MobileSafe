@@ -107,7 +107,7 @@ public class SplashActivity extends Activity {
         initData();
         //初始化动画
         initAnimation();
-        //初始化数据路
+        //初始化数据库
         initDB();
        
        
@@ -124,7 +124,7 @@ public class SplashActivity extends Activity {
 	}
 
 	/**
-	 * 拷贝数据库至Files文件夹下
+	 * 拷贝数据库至files文件夹下
 	 * @param dbName  数据库名称
 	 */
 	private void initAddressDB(String dbName) {
