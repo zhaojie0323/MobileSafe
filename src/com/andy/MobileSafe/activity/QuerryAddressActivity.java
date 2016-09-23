@@ -13,6 +13,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,8 +48,14 @@ public class QuerryAddressActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				String phone = et_phone_number.getText().toString();
-				//2、耗时操作，开启子线程
-				query(phone);
+				if(!TextUtils.isEmpty(phone)){
+					//2、耗时操作，开启子线程
+					query(phone);
+				}else{
+					//输入为空，抖动动画
+			        Animation shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+			        et_phone_number.startAnimation(shake);
+				}
 			}
 		});
 		//5、实时查询（监听输入文本框的变化）
