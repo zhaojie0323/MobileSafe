@@ -31,4 +31,9 @@ public class ConstantValue {
 	 */
 	public static final String OPEN_SECURITY = "open_security";
 
+	/**
+	 * 归属地显示的key
+	 */
+	public static final String OPEN_ADDRESS = "open_address";
+
 }
