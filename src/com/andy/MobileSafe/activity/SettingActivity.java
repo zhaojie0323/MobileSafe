@@ -1,10 +1,10 @@
 package com.andy.MobileSafe.activity;
 
 import com.andy.MobileSafe.service.AddressService;
+import com.andy.MobileSafe.utils.ServiceUtil;
 import com.andy.MobileSafe.utils.SpUtil;
 import com.andy.MobileSafe.view.SettingItemView;
 import com.andy.MobileSafe.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,16 +48,16 @@ public class SettingActivity extends Activity {
 	 */
 	private void initAddress(){
 		final SettingItemView siv_address=(SettingItemView) findViewById(R.id.siv_address);
-		//是否选中，根据上次的结果决定
-		//是否选中，根据上次的结果决定
+		//判断AddressService是否正在运行
+		boolean isRunning = ServiceUtil.isRunning(this, "com.andy.MobileSafe.service.AddressService");
+		//是否选中，根据isRunning结果决定
+		siv_address.setCheck(isRunning);
 		siv_address.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				//如果是选中状态，点击之后变成为未选中状态
-				//如果是未选中状态，点击之后变成选中状态
+				//点击过程中，状态（是否开启电话号码归属地）的切换过程
 				boolean isCheck=siv_address.isCheck();
 				siv_address.setCheck(!isCheck);
-				//将选择结果存储到sp中
 				if(!isCheck){
 					startService(new Intent(getApplicationContext(),AddressService.class));
 				}else{
