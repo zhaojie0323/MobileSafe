@@ -48,8 +48,15 @@ public class SettingActivity extends Activity {
 	 */
 	private void initAddress(){
 		final SettingItemView siv_address=(SettingItemView) findViewById(R.id.siv_address);
+<<<<<<< HEAD
 		//是否选中，根据上次的结果决定
 		//是否选中，根据上次的结果决定
+=======
+		//获取已有的开关状态，用做显示
+		boolean open_address = SpUtil.getBoolean(SettingActivity.this, ConstantValue.OPEN_ADDRESS, false);
+		//是否选中，根据上次的结果决定
+		siv_address.setCheck(open_address);
+>>>>>>> origin/master
 		siv_address.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
@@ -58,6 +65,10 @@ public class SettingActivity extends Activity {
 				boolean isCheck=siv_address.isCheck();
 				siv_address.setCheck(!isCheck);
 				//将选择结果存储到sp中
+<<<<<<< HEAD
+=======
+				SpUtil.putBoolean(SettingActivity.this, ConstantValue.OPEN_ADDRESS, !isCheck);
+>>>>>>> origin/master
 				if(!isCheck){
 					startService(new Intent(getApplicationContext(),AddressService.class));
 				}else{
