@@ -3,15 +3,26 @@ package com.andy.MobileSafe.activity;
 import com.andy.MobileSafe.service.AddressService;
 import com.andy.MobileSafe.utils.ServiceUtil;
 import com.andy.MobileSafe.utils.SpUtil;
+import com.andy.MobileSafe.view.SettingClickView;
 import com.andy.MobileSafe.view.SettingItemView;
 import com.andy.MobileSafe.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 public class SettingActivity extends Activity {
+	private static final String TAG = "SettingActivity";
+	private String[] mToastStyleDes;
+	private int mToastStyle;
+	private SettingClickView scv_toast_style;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -19,6 +30,52 @@ public class SettingActivity extends Activity {
 		setContentView(R.layout.activity_setting);
 		initUpdate();
 		initAddress();
+		initToastStyle();
+	}
+
+	private void initToastStyle() {
+		scv_toast_style = (SettingClickView) findViewById(R.id.scv_toast_style);
+		scv_toast_style.setTitle("设置归属地显示风格");
+		mToastStyleDes = new String[]{"灰色","橙色","黄色","紫色","绿色","蓝色"};
+		mToastStyle = SpUtil.getInt(this, ConstantValue.TOAST_STYLE, 0);
+		Log.d(TAG,"mToastStyle = "+mToastStyle);
+		//3、通过索引，获取字符串数组中的文字，显示给描述内容控件
+		scv_toast_style.setDescription(mToastStyleDes[mToastStyle]);
+		//4、监听点击事件，弹出对话框
+		scv_toast_style.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showToastStyleDialog();
+			}
+		});
+	}
+
+	/**
+	 * 创建设置颜色的对话框
+	 */
+	protected void showToastStyleDialog() {
+		 Builder builder = new AlertDialog.Builder(this);
+		 builder.setIcon(R.drawable.ic_launcher);
+		 builder.setTitle("请选择归属地样式");
+		 builder.setSingleChoiceItems(mToastStyleDes, mToastStyle, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//1、记录选中颜色的索引 2、关闭对话框 3、显示选择的颜色
+				SpUtil.putInt(getApplicationContext(), ConstantValue.TOAST_STYLE, which);
+				dialog.dismiss();
+				scv_toast_style.setDescription(mToastStyleDes[which]);
+				//显示对话框时选中上次选择的item
+				mToastStyle=which;
+			}
+		});
+		 //取消事件
+		 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		 builder.show();
 	}
 
 	/**

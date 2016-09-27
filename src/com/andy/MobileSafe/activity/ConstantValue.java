@@ -30,4 +30,9 @@ public class ConstantValue {
 	 * 防盗功能是否开启的key
 	 */
 	public static final String OPEN_SECURITY = "open_security";
+
+	/**
+	 * Toast选择样式索引所在的key
+	 */
+	public static final String TOAST_STYLE = "toast_style";
 }

@@ -43,6 +43,13 @@ public class SpUtil {
 		}
 		sp.edit().putString(key, value).commit();
 	}
+
+	public static void putInt(Context context,String key,int value){
+		if(sp==null){
+			sp = context.getSharedPreferences("config",Context.MODE_PRIVATE);
+		}
+		sp.edit().putInt(key, value).commit();
+	}
 	/**
 	 * @param context   上下文环境
 	 * @param key       存储节点名称
@@ -54,6 +61,13 @@ public class SpUtil {
 			sp = context.getSharedPreferences("config",Context.MODE_PRIVATE);
 		}
 		return sp.getString(key, defValue);
+	}
+
+	public static int getInt(Context context,String key,int defValue){
+		if(sp==null){
+			sp = context.getSharedPreferences("config",Context.MODE_PRIVATE);
+		}
+		return sp.getInt(key, defValue);
 	}
 	/**
 	 * @param context   上下文环境

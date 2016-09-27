@@ -65,4 +65,10 @@
 	    >
 	</com.andy.MobileSafe.view.SettingItemView>
 
+	<com.andy.MobileSafe.view.SettingClickView
+	    android:id="@+id/scv_toast_style"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	</com.andy.MobileSafe.view.SettingClickView>
+
 </LinearLayout>

@@ -1,7 +1,9 @@
 package com.andy.MobileSafe.service;
 
 import com.andy.MobileSafe.R;
+import com.andy.MobileSafe.activity.ConstantValue;
 import com.andy.MobileSafe.engine.AddressDao;
+import com.andy.MobileSafe.utils.SpUtil;
 import com.andy.MobileSafe.utils.ToastUtil;
 import android.app.Service;
 import android.content.Context;
@@ -87,6 +89,15 @@ public class AddressService extends Service {
 		parms.gravity = Gravity.LEFT + Gravity.TOP;
 		mToastView = View.inflate(getApplicationContext(), R.layout.view_toast, null);
 		tv_toast = (TextView) mToastView.findViewById(R.id.tv_toast);
+		//从sp中获取颜色索引设置Toast背景颜色
+		int[] drawableID = new int[]{R.drawable.call_location_gray,
+				R.drawable.call_location_orange,
+				R.drawable.call_location_yellow,
+				R.drawable.call_location_purple,
+				R.drawable.call_location_green,
+				R.drawable.call_location_blue};
+		int toastStyleIndex = SpUtil.getInt(getApplicationContext(), ConstantValue.TOAST_STYLE, 0);
+		tv_toast.setBackgroundResource(drawableID[toastStyleIndex]);
 		//在窗体上挂在一个view(需要权限)
 		mWM.addView(mToastView, mParams);
 		queryAddress(incomingNumber);
@@ -95,9 +106,14 @@ public class AddressService extends Service {
 	 * 查询归属地
 	 * @param incomingNumber  查询号码
 	 */
-	private void queryAddress(String incomingNumber) {
-		mAddress = AddressDao.getAddress(this, incomingNumber);
-		mHandler.sendEmptyMessage(0);
+	private void queryAddress(final String incomingNumber) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				mAddress = AddressDao.getAddress(getApplicationContext(), incomingNumber);
+				mHandler.sendEmptyMessage(0);
+			}
+		}).start();
 	}
 	@Override
 	public IBinder onBind(Intent intent) {
