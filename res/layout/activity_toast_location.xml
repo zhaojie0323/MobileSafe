@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#accc" >
+
+    <Button
+        android:id="@+id/bt_drag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/abc_cab_background_bottom_holo_dark"
+        android:drawableLeft="@android:drawable/ic_dialog_info"
+        android:padding="5dp"
+        android:text="  双击居中"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/bt_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/call_location_blue"
+        android:text="按中提示框托拽至任意位置"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/bt_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/call_location_blue"
+        android:text="按中提示框托拽至任意位置"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:padding="5dp"/>
+
+</RelativeLayout>

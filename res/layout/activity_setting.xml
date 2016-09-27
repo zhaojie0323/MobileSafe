@@ -71,4 +71,10 @@
 	    android:layout_height="wrap_content">
 	</com.andy.MobileSafe.view.SettingClickView>
 
+	<com.andy.MobileSafe.view.SettingClickView
+	    android:id="@+id/scv_location"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content">
+	</com.andy.MobileSafe.view.SettingClickView>
+
 </LinearLayout>

@@ -45,7 +45,8 @@
         <activity android:name="com.andy.MobileSafe.activity.ContactListActivity"/>
         <activity android:name="com.andy.MobileSafe.activity.AToolActivity"/>
         <activity android:name="com.andy.MobileSafe.activity.QuerryAddressActivity"/>
-
+		<activity android:name="com.andy.MobileSafe.activity.ToastLocationActivity"
+		    android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <receiver android:name="com.andy.MobileSafe.receiver.BootReceiver">
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
