@@ -4,7 +4,6 @@ import com.andy.MobileSafe.R;
 import com.andy.MobileSafe.activity.ConstantValue;
 import com.andy.MobileSafe.engine.AddressDao;
 import com.andy.MobileSafe.utils.SpUtil;
-import com.andy.MobileSafe.utils.ToastUtil;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +12,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
-import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 
 public class AddressService extends Service {
@@ -29,6 +30,8 @@ public class AddressService extends Service {
 	private View mToastView;
 	private String mAddress;
 	private TextView tv_toast;
+	private int mScreenWidthPixels;
+	private int mScreenHeightPixels;
 	private Handler mHandler=new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			tv_toast.setText(mAddress);
@@ -45,6 +48,16 @@ public class AddressService extends Service {
 		 mPhoneStateListener=new MyPhoneStateListener();
 		 mTM.listen(mPhoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
 		 mWM = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+		 //获取屏幕宽高
+		 DisplayMetrics dm = new DisplayMetrics();
+		 mWM.getDefaultDisplay().getMetrics(dm);
+		 mScreenWidthPixels = dm.widthPixels;
+		 mScreenHeightPixels = dm.heightPixels;
+		 //和以下方式得到的结果一样
+		 //int wid = mWM.getDefaultDisplay().getWidth();
+		 //int hei = mWM.getDefaultDisplay().getHeight();
+		 //Log.d(TAG,"wid = "+wid+","+"hei = "+hei);
+		 Log.d(TAG,"mScreenWidthPixels = "+mScreenWidthPixels+","+"mScreenHeightPixels = "+mScreenHeightPixels);
 		super.onCreate();
 	}
 	
@@ -85,10 +98,68 @@ public class AddressService extends Service {
 		//在响铃的时候显示Toast,和电话类型一致。
 		parms.type = WindowManager.LayoutParams.TYPE_PHONE;
 		parms.setTitle("Toast");
-		//指定Toast所在位置
+		//指定Toast所在位置(左上角)
 		parms.gravity = Gravity.LEFT + Gravity.TOP;
 		mToastView = View.inflate(getApplicationContext(), R.layout.view_toast, null);
 		tv_toast = (TextView) mToastView.findViewById(R.id.tv_toast);
+
+		mToastView.setOnTouchListener(new OnTouchListener() {
+			private int startX;
+			private int startY;
+			@Override
+			//监听按下  移动  抬起事件
+			public boolean onTouch(View v, MotionEvent event) {
+				switch(event.getAction()){
+				case MotionEvent.ACTION_DOWN:
+					//手按下时相对于屏幕左上角（原点）的距离
+					startX = (int) event.getRawX();
+					startY = (int) event.getRawY();
+					break;
+				case MotionEvent.ACTION_MOVE:
+					//手指移动后相对于屏幕左上角（原点）的距离
+					int moveX = (int) event.getRawX();
+					int moveY = (int) event.getRawY();
+					//相对于按下位置的偏移量
+					int offsetX = moveX - startX;
+					int offsetY = moveY - startY;
+					parms.x = parms.x + offsetX;
+					parms.y = parms.y + offsetY;
+
+					//容错处理（tv_toast不能托拽出屏幕）
+					if(parms.x < 0){
+						parms.x = 0;
+					}
+					if(parms.x > mScreenWidthPixels - tv_toast.getWidth()){
+						parms.x = mScreenWidthPixels - tv_toast.getWidth();
+					}
+					if(parms.y < 0){
+						parms.y = 0;
+					}
+					if(parms.y > mScreenHeightPixels - tv_toast.getHeight() - 30){
+						parms.y = mScreenHeightPixels - tv_toast.getHeight() - 30;
+					}
+
+					//告知窗体Toast需要按照手势移动去做更新
+					mWM.updateViewLayout(mToastView, parms);
+					//3、重置起始坐标
+					startX = (int) event.getRawX();
+					startY = (int) event.getRawY();
+					break;
+				case MotionEvent.ACTION_UP:
+					SpUtil.putInt(getApplicationContext(), ConstantValue.LOCATION_X, parms.x);
+					SpUtil.putInt(getApplicationContext(), ConstantValue.LOCATION_Y, parms.y);
+					break;
+				}
+				//由于只有托拽事件，因此在此返回true
+				return true;
+			}
+		});
+
+		//读取sp中存储的位置x,y坐标
+		//parms.x为Toast左上角x轴的坐标，parms.y为Toast左上角y轴的坐标
+		parms.x = SpUtil.getInt(getApplicationContext(), ConstantValue.LOCATION_X, 0);
+		parms.y = SpUtil.getInt(getApplicationContext(), ConstantValue.LOCATION_Y, 0);
+
 		//从sp中获取颜色索引设置Toast背景颜色
 		int[] drawableID = new int[]{R.drawable.call_location_gray,
 				R.drawable.call_location_orange,
@@ -99,7 +170,7 @@ public class AddressService extends Service {
 		int toastStyleIndex = SpUtil.getInt(getApplicationContext(), ConstantValue.TOAST_STYLE, 0);
 		tv_toast.setBackgroundResource(drawableID[toastStyleIndex]);
 		//在窗体上挂在一个view(需要权限)
-		mWM.addView(mToastView, mParams);
+		mWM.addView(mToastView, parms);
 		queryAddress(incomingNumber);
 	}
 	/**
