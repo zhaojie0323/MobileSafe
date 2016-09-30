@@ -5,8 +5,10 @@ import com.andy.MobileSafe.activity.ConstantValue;
 import com.andy.MobileSafe.engine.AddressDao;
 import com.andy.MobileSafe.utils.SpUtil;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
@@ -32,6 +34,7 @@ public class AddressService extends Service {
 	private TextView tv_toast;
 	private int mScreenWidthPixels;
 	private int mScreenHeightPixels;
+	private InnerOutCallReceiver mInnerOutCallReceiver;
 	private Handler mHandler=new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			tv_toast.setText(mAddress);
@@ -58,9 +61,29 @@ public class AddressService extends Service {
 		 //int hei = mWM.getDefaultDisplay().getHeight();
 		 //Log.d(TAG,"wid = "+wid+","+"hei = "+hei);
 		 Log.d(TAG,"mScreenWidthPixels = "+mScreenWidthPixels+","+"mScreenHeightPixels = "+mScreenHeightPixels);
+
+		 //监听播出电话的过滤条件
+		 IntentFilter intentFilter = new IntentFilter();
+		 intentFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+		 mInnerOutCallReceiver = new InnerOutCallReceiver();
+		 //注册广播
+		 registerReceiver(mInnerOutCallReceiver, intentFilter);
 		super.onCreate();
 	}
 	
+	/**
+	 * 监听拨出电话的广播接收器
+	 */
+	class InnerOutCallReceiver extends BroadcastReceiver{
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			//接受到拨出电话的广播后，显示自定义的Toast，显示电话号码归属地
+			String phone = getResultData();
+			Log.d(TAG,"Out call number is "+phone);
+			showToast(phone);
+		}
+	}
+
 	class MyPhoneStateListener extends PhoneStateListener{
 
 		@Override
@@ -201,6 +224,9 @@ public class AddressService extends Service {
 		// 取消对电话状态的监听
 		if(mPhoneStateListener != null){
 			mTM.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);		
+		}
+		if(mInnerOutCallReceiver != null){
+			unregisterReceiver(mInnerOutCallReceiver);
 		}
 		super.onDestroy();
 	}
