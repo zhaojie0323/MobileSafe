@@ -57,6 +57,10 @@ public class HomeActivity extends Activity {
 				case 0:
 					showDialog();
 					break;
+				case 1:
+					//跳转到通信卫士功能列表界面
+					startActivity(new Intent(getApplicationContext(),BlackNumberActivity.class));
+					break;
 				case 7:
 					//跳转到高级工具功能列表界面、
 					startActivity(new Intent(getApplicationContext(),AToolActivity.class));
@@ -90,7 +94,7 @@ public class HomeActivity extends Activity {
 		//view是由自己编写的xml转换成的view对象
 		Builder builder = new AlertDialog.Builder(this);
 		final AlertDialog dialog = builder.create();
-		final View view=View.inflate(this, R.layout.set_pwd_dialog, null);
+		final View view=View.inflate(this, R.layout.dialog_set_pwd, null);
 		//dialog.setView(view);
 		//为了兼容低版本，给对话框设置布局的时候，让其没有内边距
 		dialog.setView(view, 0, 0, 0, 0);
@@ -139,7 +143,7 @@ public class HomeActivity extends Activity {
 	private void showConfrimPwdDialog() {
 		Builder builder = new AlertDialog.Builder(this);
 		final AlertDialog dialog = builder.create();
-		final View view=View.inflate(this, R.layout.confirm_pwd_dialog, null);
+		final View view=View.inflate(this, R.layout.dialog_confirm_pwd, null);
 		//dialog.setView(view);
 		dialog.setView(view, 0, 0, 0, 0);
 		dialog.show();
