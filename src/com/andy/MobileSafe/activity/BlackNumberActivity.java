@@ -1,7 +1,6 @@
 package com.andy.MobileSafe.activity;
 
 import java.util.List;
-
 import com.andy.MobileSafe.R;
 import com.andy.MobileSafe.db.dao.BlackNumberDao;
 import com.andy.MobileSafe.db.domain.BlackNumberInfo;
@@ -52,29 +51,44 @@ public class BlackNumberActivity extends Activity {
 		public long getItemId(int position) {
 			return position;
 		}
-
+		//对ListView进行优化
+		//1、复用convertView
+		//2、减少findViewById的次数、将findViewById的过程封装到convertView == null的情景中去
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
-			View view  = View.inflate(getApplicationContext(), R.layout.listview_blacknumber_item, null);
-			TextView tv_phone = (TextView) view.findViewById(R.id.tv_phone);
-			TextView tv_mode = (TextView) view.findViewById(R.id.tv_mode);
-			ImageView iv_delete = (ImageView) view.findViewById(R.id.iv_delete);
+			//复用ViewHolder步骤一
+			ViewHolder holder = null;
+			if(convertView == null){
+				convertView  = View.inflate(getApplicationContext(), R.layout.listview_blacknumber_item, null);
+				//复用ViewHolder步骤三
+				holder = new ViewHolder();
+				//复用ViewHolder步骤四
+				holder.tv_phone = (TextView) convertView.findViewById(R.id.tv_phone);
+				holder.tv_mode = (TextView) convertView.findViewById(R.id.tv_mode);
+				holder.iv_delete = (ImageView) convertView.findViewById(R.id.iv_delete);
+				//复用ViewHolder步骤五
+				convertView.setTag(holder);
+			}else{
+				//复用ViewHolder步骤六
+				holder = (ViewHolder) convertView.getTag();
+			}
+
 			final String phone = mBlackNumberInfoList.get(position).getPhone();
-			tv_phone.setText(phone);
+			holder.tv_phone.setText(phone);
 			String mode = mBlackNumberInfoList.get(position).getMode();
 			switch(Integer.parseInt(mode)){
 			case 1:
-				tv_mode.setText("拦截短信");
+				holder.tv_mode.setText("拦截短信");
 				break;
 			case 2:
-				tv_mode.setText("拦截电话");
+				holder.tv_mode.setText("拦截电话");
 				break;
 			case 3:
-				tv_mode.setText("拦截所有");
+				holder.tv_mode.setText("拦截所有");
 				break;
 			}
 
-			iv_delete.setOnClickListener(new OnClickListener() {
+			holder.iv_delete.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					//删除数据库
@@ -87,8 +101,14 @@ public class BlackNumberActivity extends Activity {
 					}
 				}
 			});
-			return view;
+			return convertView;
 		}
+	}
+	//复用ViewHolder步骤二
+	class ViewHolder{
+		TextView tv_phone;
+		TextView tv_mode;
+		ImageView iv_delete;
 	}
 
 	@Override
