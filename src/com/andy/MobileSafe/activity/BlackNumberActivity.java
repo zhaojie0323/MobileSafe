@@ -14,6 +14,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,10 +31,16 @@ public class BlackNumberActivity extends Activity {
 	private ListView lv_blacknumber;
 	private String mode = "1";
 	private BlackNumberAdapter mAdapter;
+	private boolean mIsload=false;
+	private int mCount = 0;
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
-			mAdapter = new BlackNumberAdapter();
-			lv_blacknumber.setAdapter(mAdapter);
+			if(mAdapter == null){
+				mAdapter = new BlackNumberAdapter();
+				lv_blacknumber.setAdapter(mAdapter);
+			}else{
+				mAdapter.notifyDataSetChanged();
+			}
 		};
 	};
 
@@ -53,7 +61,9 @@ public class BlackNumberActivity extends Activity {
 		}
 		//对ListView进行优化
 		//1、复用convertView
-		//2、减少findViewById的次数、将findViewById的过程封装到convertView == null的情景中去
+		//2、减少findViewById的次数、将findViewById的过程封装到convertView == null的情景中去，使用ViewHolder
+		//3、将ViewHolder定义成静态，不会去创建多个对象
+		//4、ListView有多个条目的时候，可以使用分页算法，每一次加载20个条目，逆序返回
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			//复用ViewHolder步骤一
@@ -105,7 +115,7 @@ public class BlackNumberActivity extends Activity {
 		}
 	}
 	//复用ViewHolder步骤二
-	class ViewHolder{
+	static class ViewHolder{
 		TextView tv_phone;
 		TextView tv_mode;
 		ImageView iv_delete;
@@ -123,7 +133,8 @@ public class BlackNumberActivity extends Activity {
 		new Thread(){
 			public void run() {
 				mBlackNumberDao = BlackNumberDao.getInstance(getApplicationContext());
-				mBlackNumberInfoList = mBlackNumberDao.findAll();
+				mBlackNumberInfoList = mBlackNumberDao.find(0);
+				mCount = mBlackNumberDao.getCount();
 				//告知主线程数据已经准备好，可以使用
 				mHandler.sendEmptyMessage(0);
 			};
@@ -137,6 +148,47 @@ public class BlackNumberActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				showDialog();
+			}
+		});
+		//监听其滚动状态
+		lv_blacknumber.setOnScrollListener(new OnScrollListener() {
+			//滚动过程中状态发生改变调用
+			//OnScrollListener.SCROLL_STATE_FLING  飞速滚动
+			//OnScrollListener.SCROLL_STATE_IDLE   空闲状态
+			//OnScrollListener.SCROLL_STATE_TOUCH_SCROLL   拿手触摸着滚动
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if(mBlackNumberInfoList != null){
+					//条件一：滚动到停止状态
+					//条件二：最后一个条目可见（最后一个条目的索引值>=数据适配器中集合的总条目个数-1)
+					//mIsload:防止重复加载的变量，如果当前正在加载，mIsload为true，本次加载完毕之后，再将mIsload改为false，然后加载下一页数据
+					if(scrollState == OnScrollListener.SCROLL_STATE_IDLE
+							&& lv_blacknumber.getLastVisiblePosition() >= mBlackNumberInfoList.size()-1
+							&& !mIsload){
+						//如果条目的总数大于集合的总数时，再去加载数据
+						if(mCount > mBlackNumberInfoList.size()){
+							new Thread(){
+								public void run() {
+									mIsload =true;
+									//1、获取操作黑名单数据库对象
+									mBlackNumberDao = BlackNumberDao.getInstance(getApplicationContext());
+									//2、查询部分数据
+									List<BlackNumberInfo> moreData = mBlackNumberDao.find(mBlackNumberInfoList.size());
+									//3、添加下一页数据
+									mBlackNumberInfoList.addAll(moreData);
+									//4、告知适配器刷新数据
+									mHandler.sendEmptyMessage(0);
+									mIsload = false;
+								};
+							}.start();
+						}
+					}
+				}
+			}
+			//滚动过程中调用方法
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
 			}
 		});
 	}

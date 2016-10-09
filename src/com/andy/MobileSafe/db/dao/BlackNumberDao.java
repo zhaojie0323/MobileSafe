@@ -72,12 +72,16 @@ public class BlackNumberDao {
 		db.close();
 	}
 
+	/**
+	 * 查询数据库中所有的条目
+	 * @return  返回数据库中所有的条目的集合
+	 */
 	public List<BlackNumberInfo> findAll(){
 		SQLiteDatabase db = mBlackNumberOpenHelper.getWritableDatabase();
 
 		Cursor cursor = db.query(TABLE_NAME, new String[]{"phone","mode" }, null, null, null, null, "_id desc");
 		List<BlackNumberInfo> blackNumberList = new ArrayList<BlackNumberInfo>();
-		while(cursor !=null && cursor.moveToNext()){
+		while(cursor != null && cursor.moveToNext()){
 			BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
 			String phone = cursor.getString(0);
 			String mode = cursor.getString(1);
@@ -89,5 +93,46 @@ public class BlackNumberDao {
 
 		db.close();
 		return blackNumberList;
+	}
+
+	/**
+	 * 每次查询20条数据
+	 * @param index  查询的索引值
+	 * @return  返回查询的20条数据的集合
+	 */
+	public List<BlackNumberInfo> find(int index){
+		SQLiteDatabase db = mBlackNumberOpenHelper.getWritableDatabase();
+
+		Cursor cursor = db.rawQuery("select phone,mode from BlackNumber order by _id desc limit ?,20;", new String[]{index+""});
+		List<BlackNumberInfo> blackNumberList = new ArrayList<BlackNumberInfo>();
+		while(cursor != null && cursor.moveToNext()){
+			BlackNumberInfo blackNumberInfo = new BlackNumberInfo();
+			String phone = cursor.getString(0);
+			String mode = cursor.getString(1);
+			blackNumberInfo.setPhone(phone);
+			blackNumberInfo.setMode(mode);
+			blackNumberList.add(blackNumberInfo);
+		}
+		cursor.close();
+
+		db.close();
+		return blackNumberList;
+	}
+
+	/**
+	 * 用于获取数据库中数据的总条目数
+	 * @return  返回数据库中数据的条目数
+	 */
+	public int getCount(){
+		SQLiteDatabase db = mBlackNumberOpenHelper.getWritableDatabase();
+		int count=0;
+		Cursor cursor = db.rawQuery("select count(*) from BlackNumber;",null);
+		while(cursor !=null && cursor.moveToNext()){
+			count = cursor.getInt(0);
+		}
+		cursor.close();
+
+		db.close();
+		return count;
 	}
 }
