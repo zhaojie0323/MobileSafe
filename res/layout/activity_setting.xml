@@ -77,4 +77,13 @@
 	    android:layout_height="wrap_content">
 	</com.andy.MobileSafe.view.SettingClickView>
 
+	<com.andy.MobileSafe.view.SettingItemView
+        xmlns:mobileSafe="http://schemas.android.com/apk/res/com.andy.MobileSafe"
+        android:id="@+id/siv_balcknumber "
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        mobileSafe:destitle="黑名单拦截设置"
+        mobileSafe:desoff="黑名单拦截已关闭"
+        mobileSafe:deson="黑名单拦截已开启"/>
+
 </LinearLayout>

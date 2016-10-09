@@ -1,6 +1,7 @@
 package com.andy.MobileSafe.activity;
 
 import com.andy.MobileSafe.service.AddressService;
+import com.andy.MobileSafe.service.BlackNumberService;
 import com.andy.MobileSafe.utils.ServiceUtil;
 import com.andy.MobileSafe.utils.SpUtil;
 import com.andy.MobileSafe.view.SettingClickView;
@@ -33,6 +34,28 @@ public class SettingActivity extends Activity {
 		initAddress();
 		initToastStyle();
 		initLocation();
+		initBlackNumber();
+	}
+
+	/**
+	 * 拦截黑名单短信电话
+	 */
+	private void initBlackNumber() {
+		final SettingItemView siv_balcknumber = (SettingItemView) findViewById(R.id.siv_balcknumber);
+		boolean isRunning = ServiceUtil.isRunning(this, "com.andy.MobileSafe.service.BlackNumberService");
+		siv_balcknumber.setCheck(isRunning);
+		siv_balcknumber.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				boolean isCheck = siv_balcknumber.isCheck();
+				siv_balcknumber.setCheck(!isCheck);
+				if(!isCheck){
+					startService(new Intent(getApplicationContext(),BlackNumberService.class));
+				}else{
+					stopService(new Intent(getApplicationContext(),BlackNumberService.class));
+				}
+			}
+		});
 	}
 
 	/**

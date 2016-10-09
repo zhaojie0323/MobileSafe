@@ -135,4 +135,22 @@ public class BlackNumberDao {
 		db.close();
 		return count;
 	}
+
+	/**
+	 * 查询数据库中电话号码的拦截模式
+	 * @param phone    被查询的电话号码
+	 * @return    返回被查询电话号码的拦截模式  1：短信，2：电话，3：所有，0：未查询到
+	 */
+	public int getMode(String phone){
+		SQLiteDatabase db = mBlackNumberOpenHelper.getWritableDatabase();
+		int mode=0;
+		Cursor cursor = db.query(TABLE_NAME, new String[]{"mode"}, "phone = ?", new String[]{phone}, null, null, null);
+		while(cursor !=null && cursor.moveToNext()){
+			mode = cursor.getInt(0);
+		}
+		cursor.close();
+
+		db.close();
+		return mode;
+	}
 }
