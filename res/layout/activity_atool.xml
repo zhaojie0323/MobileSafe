@@ -18,4 +18,14 @@
         android:clickable="true"
         android:background="@drawable/selector_atool_item_bg"
         android:drawableLeft="@android:drawable/star_on"/>
+    <TextView
+        android:id="@+id/tv_sms_backup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="短信备份"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:background="@drawable/selector_atool_item_bg"
+        android:drawableLeft="@android:drawable/star_on"/>
 </LinearLayout>
