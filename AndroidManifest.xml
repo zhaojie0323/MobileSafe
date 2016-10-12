@@ -63,6 +63,7 @@
 		<activity android:name="com.andy.MobileSafe.activity.ToastLocationActivity"
 		    android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 		<activity android:name="com.andy.MobileSafe.activity.BlackNumberActivity"/>
+		<activity android:name="com.andy.MobileSafe.activity.AppManagerActivity"/>
         <receiver android:name="com.andy.MobileSafe.receiver.BootReceiver">
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
