@@ -18,6 +18,8 @@ import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,14 +29,20 @@ public class AppManagerActivity extends Activity {
 	private static final String TAG = "AppManagerActivity";
 	private List<AppInfo> mAppInfoList;
 	private ListView lv_app_list;
+	private TextView tv_des;
 	private List<AppInfo> mCustomList;
 	private List<AppInfo> mSystemList;
 	private Handler mHandler = new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			MyAdapter adapter = new MyAdapter();
 			lv_app_list.setAdapter(adapter);
+
+			if(tv_des != null && mCustomList != null){
+				tv_des.setText("用户应用"+"("+mCustomList.size()+")");
+			}
 		};
 	};
+
 	class MyAdapter extends BaseAdapter{
 		//获取数据适配器中条目类型的总数，修改成两种（纯文本，文字+图片）
 		@Override
@@ -140,6 +148,7 @@ public class AppManagerActivity extends Activity {
 
 	private void initList() {
 		lv_app_list = (ListView) findViewById(R.id.lv_app_list);
+		tv_des = (TextView) findViewById(R.id.tv_des);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -158,6 +167,30 @@ public class AppManagerActivity extends Activity {
 				mHandler.sendEmptyMessage(0);
 			}
 		}).start();
+
+		lv_app_list.setOnScrollListener(new OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+			}
+			//滚动过程中调用的方法
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				//firstVisibleItem 第一个可见条目
+				//visibleItemCount 当前一个屏幕的可见条目
+				//totalItemCount 条目总数
+				if(mCustomList != null && mSystemList != null){
+					if(firstVisibleItem >= mCustomList.size()+1){
+						//滚动到系统应用
+						tv_des.setText("系统应用"+"("+mSystemList.size()+")");
+					}else{
+						//滚动到用户应用
+						tv_des.setText("用户应用"+"("+mCustomList.size()+")");
+					}
+				}
+			}
+		});
 	}
 
 	private void initTitle() {
