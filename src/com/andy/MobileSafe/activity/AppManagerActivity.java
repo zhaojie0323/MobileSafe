@@ -76,7 +76,7 @@ public class AppManagerActivity extends Activity implements OnClickListener{
 		}
 		@Override
 		public int getCount() {
-			return mCustomList.size() + mSystemList.size();
+			return mCustomList.size() + mSystemList.size() + 2;
 		}
 
 		@Override

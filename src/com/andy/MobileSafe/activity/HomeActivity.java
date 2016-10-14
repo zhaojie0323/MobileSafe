@@ -65,6 +65,10 @@ public class HomeActivity extends Activity {
 					//跳转到软件管理功能列表界面
 					startActivity(new Intent(getApplicationContext(),AppManagerActivity.class));
 					break;
+				case 3:
+					//跳转到进程管理功能列表界面
+					startActivity(new Intent(getApplicationContext(),ProcessManagerActivity.class));
+					break;
 				case 7:
 					//跳转到高级工具功能列表界面、
 					startActivity(new Intent(getApplicationContext(),AToolActivity.class));
