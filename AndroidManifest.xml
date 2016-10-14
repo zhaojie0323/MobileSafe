@@ -67,6 +67,7 @@
 		<activity android:name="com.andy.MobileSafe.activity.BlackNumberActivity"/>
 		<activity android:name="com.andy.MobileSafe.activity.AppManagerActivity"/>
 		<activity android:name="com.andy.MobileSafe.activity.ProcessManagerActivity"/>
+		<activity android:name="com.andy.MobileSafe.activity.ProcessSettingActivity"/>
         <receiver android:name="com.andy.MobileSafe.receiver.BootReceiver">
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -95,6 +96,7 @@
         <service android:name="com.andy.MobileSafe.service.LocationService"/>
         <service android:name="com.andy.MobileSafe.service.AddressService"/>
 		<service android:name="com.andy.MobileSafe.service.BlackNumberService"/>
+		<service android:name="com.andy.MobileSafe.service.LockScreenService"/>
 	</application>
 
 

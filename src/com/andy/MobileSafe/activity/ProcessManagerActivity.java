@@ -2,15 +2,13 @@ package com.andy.MobileSafe.activity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.andy.MobileSafe.R;
 import com.andy.MobileSafe.db.domain.ProcessInfo;
 import com.andy.MobileSafe.engine.ProcessInfoProvider;
+import com.andy.MobileSafe.utils.SpUtil;
 import com.andy.MobileSafe.utils.ToastUtil;
-import com.lidroid.xutils.view.annotation.ContentView;
-
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Formatter;
@@ -55,6 +53,12 @@ public class ProcessManagerActivity extends Activity implements OnClickListener 
 
 			if(tv_des != null && mCustomList != null){
 				tv_des.setText("用户进程"+"("+mCustomList.size()+")");
+			}
+			if(tv_process_count != null){
+				tv_process_count.setText("进程总数："+mProcessCount);
+			}
+			if(tv_memery_info != null){
+				tv_memery_info.setText("剩余/总共："+mStrAvailableSpace+"/"+mStrTotalSpace);
 			}
 		};
 	};
@@ -166,9 +170,14 @@ public class ProcessManagerActivity extends Activity implements OnClickListener 
 		}
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
+
 			if(mCustomList != null && mSystemList != null){
-				return mCustomList.size() + mSystemList.size() + 2;
+				//根据是否显示系统进程返回不同的结果
+				if(SpUtil.getBoolean(getApplicationContext(), ConstantValue.SHOW_SYSTEM, false)){
+					return mCustomList.size() + mSystemList.size() + 2;
+				}else{
+					return mCustomList.size() + 1;
+				}
 			}
 			return 0;
 		}
@@ -265,8 +274,22 @@ public class ProcessManagerActivity extends Activity implements OnClickListener 
 			clear();
 			break;
 		case R.id.bt_set:
+			setting();
 			break;
 		}
+	}
+
+	private void setting() {
+		Intent intent = new Intent(this,ProcessSettingActivity.class);
+		startActivityForResult(intent, 0);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(myAdapter != null){
+			//myAdapter.notifyDataSetChanged();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void clear() {
@@ -365,9 +388,10 @@ public class ProcessManagerActivity extends Activity implements OnClickListener 
 						mCustomList.add(info);
 					}
 				}
-				Log.d(TAG,"mCustomList.size() = "+mCustomList.size());
-				Log.d(TAG,"mSystemList.size() = "+mSystemList.size());
-				Log.d(TAG,"mProcessInfoList.size() = "+mProcessInfoList.size());
+				//锁屏清理后，从新获取进程总数和剩余空间大小
+				mProcessCount = ProcessInfoProvider.getProcessCount(getApplicationContext());
+				mAvailableSpace = ProcessInfoProvider.getAvailableSpace(getApplicationContext());
+				mStrAvailableSpace = Formatter.formatFileSize(getApplicationContext(), mAvailableSpace);
 				mHandler.sendEmptyMessage(0);
 			};
 		}.start();

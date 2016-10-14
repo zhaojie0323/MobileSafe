@@ -134,7 +134,24 @@ public class ProcessInfoProvider {
 	 * @param packageName   进程包名
 	 */
 	public static void killProcess(Context context,ProcessInfo processInfo){
+		//1、获取ActivityManager对象和PackageManager对象
 		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		//2、杀死进程
 		am.killBackgroundProcesses(processInfo.getPackageName());
+	}
+
+	public static void killAll(Context context){
+		//1、获取ActivityManager对象和PackageManager对象
+		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		//2、获取当前正在运行的进程
+		List<RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+		//3、遍历集合，杀死除了当前应用的所有进程
+		for (RunningAppProcessInfo runningAppProcessInfo : runningAppProcesses) {
+			//除了手机卫士外，其他进程都需要杀死
+			if(runningAppProcessInfo.processName.equals(context.getPackageName())){
+				continue;
+			}
+			am.killBackgroundProcesses(runningAppProcessInfo.processName);
+		}
 	}
 }
