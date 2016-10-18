@@ -49,4 +49,9 @@ public class ConstantValue {
 	 * 是否显示系统进程的key
 	 */
 	public static final String SHOW_SYSTEM = "show_system";
+
+	/**
+	 * 是否生成快捷方式的key
+	 */
+	public static final String HAS_SHORTCUT = "has_shortcut";
 }
