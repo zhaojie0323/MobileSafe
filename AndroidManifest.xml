@@ -75,6 +75,7 @@
 		<activity android:name="com.andy.MobileSafe.activity.AppManagerActivity"/>
 		<activity android:name="com.andy.MobileSafe.activity.ProcessManagerActivity"/>
 		<activity android:name="com.andy.MobileSafe.activity.ProcessSettingActivity"/>
+		<activity android:name="com.andy.MobileSafe.activity.CommonNumberActivity"/>
         <receiver android:name="com.andy.MobileSafe.receiver.BootReceiver">
             <intent-filter >
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

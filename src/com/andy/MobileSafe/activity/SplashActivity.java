@@ -141,9 +141,10 @@ public class SplashActivity extends Activity {
      * 初始化数据库
      */
     private void initDB() {
-		// 1、归属地数据拷贝过程
+		// 1、归属地数据库拷贝过程
     	initAddressDB("callHomeDB.db");
-		
+		// 2、常用号码数据库拷贝过程
+    	initAddressDB("commonnum.db");
 	}
 
 	/**

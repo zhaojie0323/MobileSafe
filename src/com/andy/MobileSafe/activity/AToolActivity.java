@@ -19,6 +19,7 @@ import android.widget.TextView;
 public class AToolActivity extends Activity {
 	private TextView tv_query_phone_address;
 	private TextView tv_sms_backup;
+	private TextView tv_commonnumber_query;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,18 @@ public class AToolActivity extends Activity {
 		initQueryAddress();
 		//备份短信
 		initSmsBackup();
+		//常用号码查询
+		initCommonNumber();
+	}
+
+	private void initCommonNumber() {
+		tv_commonnumber_query = (TextView) findViewById(R.id.tv_commonnumber_query);
+		tv_commonnumber_query.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(),CommonNumberActivity.class));
+			}
+		});
 	}
 
 	private void initSmsBackup() {
